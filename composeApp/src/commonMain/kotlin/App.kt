@@ -1,24 +1,40 @@
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun App() {
     MaterialTheme {
-        
+        val uriHandler = LocalUriHandler.current
+
+        val listOfNumbers: List<String> = listOf(
+            "tel:+37499999999",
+            "tel:+374 999-999-99",
+            "tel:+374 (999) 999-99",
+            "tel:+374(999)999-99",
+            "tel:+374(999)99999",
+            "tel:+1 (999)99999",
+            "tel:+1 (999) 999-99",
+            "tel:+1 999-999-99",
+            "tel:+199999999",
+            "https://www.google.com"
+        )
+
+        var lazyList =
+            LazyColumn(modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(16.dp)) {
+                items(listOfNumbers) {
+                    Button(onClick = { uriHandler.openUri(it) }) {
+                        Text(it)
+                    }
+                }
+            }
     }
 }
